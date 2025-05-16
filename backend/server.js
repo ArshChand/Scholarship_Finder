@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const studentsroutes = require('./routes/students');
+const scholarshipRoutes = require('./routes/scholarshipRoutes'); 
 
 const app = express();
 app.use(cors());
@@ -14,6 +15,7 @@ mongoose.connect(process.env.MONGO_URI)
     .catch((err) => console.error('Error connecting to MongoDB:', err));
 
 app.use('/students', studentsroutes);
+app.use('/scholarships', scholarshipRoutes);
 
 app.get('/', (req, res) => {
     res.send("Scholarship Finder API");

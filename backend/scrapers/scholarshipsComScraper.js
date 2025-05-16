@@ -1,38 +1,78 @@
-// backend/scrapers/cheggScraper.js
-const axios = require('axios');
-const cheerio = require('cheerio');
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+puppeteer.use(StealthPlugin());
 
 async function scrapeScholarshipsCom() {
-  const scholarships = [];
+  const browser = await puppeteer.launch({
+    headless: false, // Set to true later once stable
+    defaultViewport: null,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
 
-  try {
-    const url = 'https://www.scholarships.com/financial-aid/college-scholarships/scholarship-directory/academic-major'; // sample category URL
-    const { data } = await axios.get(url);
-    const $ = cheerio.load(data);
+  const page = await browser.newPage();
 
-    $('.scholarship__item').each((i, element) => {
-      const title = $(element).find('.scholarship__title').text().trim();
-      const link = 'https://www.scholarships.com' + $(element).find('a').attr('href');
-      const amount = $(element).find('.scholarship__amount').text().trim();
-      const deadline = $(element).find('.scholarship__deadline').text().trim();
-      const eligibility = $(element).find('.scholarship__info').text().trim();
+  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36');
 
-      scholarships.push({
+  await page.goto('https://www.scholarships.com/financial-aid/college-scholarships', {
+    waitUntil: 'networkidle2',
+    timeout: 60000
+  });
+
+  await autoScroll(page);
+
+  await page.waitForSelector('.award-box > a', { timeout: 10000 });
+
+  const scholarships = await page.evaluate(() => {
+    return [...document.querySelectorAll('.award-box > a')].map(el => {
+      const titleEl = el.querySelector('h2') || el.querySelector('em');
+      const title = titleEl ? titleEl.innerText.trim() : '';
+
+      const lis = el.querySelectorAll('ul > li');
+      let amount = '';
+      let deadline = '';
+
+      lis.forEach(li => {
+        const em = li.querySelector('em')?.innerText.toLowerCase();
+        const spanText = li.querySelector('span')?.innerText.trim();
+
+        if (em?.includes('amount')) amount = spanText || '';
+        if (em?.includes('deadline')) deadline = spanText || '';
+      });
+
+      const link = 'https://www.scholarships.com' + (el.getAttribute('href') || '');
+      const description = el.querySelector('p')?.innerText.trim() || '';
+
+      return {
         title,
         amount,
         deadline,
         applicationLink: link,
-        description: eligibility,
-        source: 'Scholarships.com'
-      });
+        description,
+        source: 'Scholarships.com',
+      };
     });
+  });
 
-    return scholarships;
+  await browser.close();
+  return scholarships;
+}
 
-  } catch (error) {
-    console.error('Error scraping Scholarships.com:', error.message);
-    return [];
-  }
+async function autoScroll(page) {
+  await page.evaluate(async () => {
+    await new Promise(resolve => {
+      let totalHeight = 0;
+      const distance = 100;
+      const timer = setInterval(() => {
+        window.scrollBy(0, distance);
+        totalHeight += distance;
+        const loaded = document.querySelectorAll('.award-box').length;
+        if (loaded >= 25 || totalHeight > 3000) {
+          clearInterval(timer);
+          resolve();
+        }
+      }, 200);
+    });
+  });
 }
 
 module.exports = scrapeScholarshipsCom;

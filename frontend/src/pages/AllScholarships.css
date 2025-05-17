@@ -1,0 +1,66 @@
+.scholarships-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters input, .filters select {
+  padding: 8px;
+  font-size: 14px;
+  flex: 1;
+}
+
+.scholarship-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.scholarship-card {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  background: white;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+}
+
+.scholarship-card h3 {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+
+.scholarship-card p {
+  margin: 4px 0;
+}
+
+.scholarship-card a {
+  display: inline-block;
+  margin-top: 8px;
+  background: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.status {
+  font-weight: bold;
+}
+
+.status.open {
+  color: green;
+}
+
+.status.ending-soon {
+  color: orange;
+}
+
+.status.expired {
+  color: red;
+}

@@ -1,0 +1,45 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #ddd;
+}
+
+.navbar__logo a {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007acc;
+  text-decoration: none;
+}
+
+.navbar__links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar__links li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.navbar__links li.active a {
+  font-weight: bold;
+  color: #007acc;
+}
+
+.navbar__auth .btn {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #007acc;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #007acc;
+}
+
+.navbar__auth .signup {
+  background-color: #007acc;
+  color: white;
+}

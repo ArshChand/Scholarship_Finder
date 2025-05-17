@@ -53,7 +53,7 @@ async function scrapeScholarshipsCom() {
     });
   });
 
-  await browser.close();
+  await browser.close(); 
   return scholarships;
 }
 

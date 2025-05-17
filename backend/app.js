@@ -12,6 +12,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/scholarships', scholarshipRoutes);
+app.use('api/students', studentsRoutes);
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,

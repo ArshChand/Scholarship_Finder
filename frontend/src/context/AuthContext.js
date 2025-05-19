@@ -1,53 +1,44 @@
-// Frontend - src/context/AuthContext.js
-import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+
 
 const AuthContext = createContext();
+export const useAuth = () => useContext(AuthContext);
 
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // NEW
 
   useEffect(() => {
-    checkLoggedIn();
-  }, []);
-
-  const checkLoggedIn = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-    
-    try {
-      const res = await axios.get('/api/auth/me', {
-        headers: { 'x-auth-token': token }
-      });
-      setUser(res.data);
-    } catch (err) {
+    if (token) {
+      localStorage.setItem('token', token);
+      try {
+        const decoded = jwtDecode(token);
+        setUser({ name: decoded.name, id: decoded.id });
+      } catch (err) {
+        console.error('Invalid token', err);
+        setUser(null);
+      }
+    } else {
       localStorage.removeItem('token');
+      setUser(null);
     }
-    setLoading(false);
-  };
+    setLoading(false); // ✅ Always mark loading complete
+  }, [token]);
 
-  const login = async (formData) => {
-    const res = await axios.post('/api/auth/login', formData);
-    localStorage.setItem('token', res.data.token);
-    setUser(res.data.user);
+  const login = (tkn) => {
+    setLoading(true);  // Optional: if you want to reset loading during login
+    setToken(tkn);
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
+    setToken(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
-      {!loading && children}
+    <AuthContext.Provider value={{ token, user, login, logout, loading }}>
+      {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  return useContext(AuthContext);
-}
+};

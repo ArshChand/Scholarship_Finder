@@ -1,64 +1,85 @@
-// src/components/Signup.js
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { signup } from '../api';
+import { useNavigate } from 'react-router-dom';
 import './Signup.css';
 
 const Signup = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    setError('');
+
+    if (!name || !email || !password) {
+      setError('Please fill out all fields.');
+      return;
+    }
+
     try {
-      await signup(formData);  // this now goes to http://localhost:5000/api/auth/signup
-      navigate('/login');
+      const response = await fetch('http://localhost:5000/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('signupEmail', data.user.email);
+        navigate('/complete-profile');
+      } else {
+        setError(data.message || 'Signup failed.');
+      }
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        err.response?.data ||
-        'Signup failed. Please try again.'
-      );
+      console.error('Signup error:', err);
+      setError('Something went wrong. Please try again.');
     }
   };
 
+
   return (
-    <div className="signup-container">
-      <h2>Sign Up</h2>
-      <form className="signup-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          required
-          value={formData.name}
-          onChange={e => setFormData({ ...formData, name: e.target.value })}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          required
-          value={formData.email}
-          onChange={e => setFormData({ ...formData, email: e.target.value })}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          required
-          minLength="6"
-          value={formData.password}
-          onChange={e => setFormData({ ...formData, password: e.target.value })}
-        />
-        <button className="signup-btn" type="submit">Sign Up</button>
-        {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+    <div className="login-container">
+      <h2>Create an account</h2>
+      <form onSubmit={handleSignup}>
+        <div className="form-group">
+          <label>Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your full name"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Create a password"
+            required
+          />
+        </div>
+        {error && <div className="error-message">{error}</div>}
+        {message && <div className="success-message">{message}</div>}
+        <button type="submit" className="login-btn">Sign Up</button>
       </form>
-      <p>
-        Already have an account?{' '}
-        <Link className="signup-link" to="/login">
-          Login
-        </Link>
-      </p>
+      <p>Already have an account? <a href="/login">Login</a></p>
     </div>
   );
 };

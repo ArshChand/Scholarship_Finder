@@ -1,55 +1,80 @@
 import React, { useState } from 'react';
-import { login } from '../api'; // ✅ use centralized API instance
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // ✅ import this
 import './Login.css';
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const { login } = useAuth(); // ✅ get login function from context
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
+
+    if (!email || !password) {
+      setError('Please enter both email and password.');
+      return;
+    }
+
     try {
-      const res = await login(formData); // ✅ uses axios instance with baseURL
-      localStorage.setItem('token', res.data.token); // optionally store user info too
-      navigate('/');
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        login(data.token); // ✅ actually call the login context method
+        setMessage('Login successful! Redirecting...');
+        setError('');
+        setTimeout(() => navigate('/'), 1500);
+      } else {
+        setError(data.message || 'Login failed.');
+        setMessage('');
+      }
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        err.response?.data ||
-        'Login failed. Please try again.'
-      );
+      console.error('Login error:', err);
+      setError('Something went wrong. Please try again.');
+      setMessage('');
     }
   };
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          required
-          value={formData.email}
-          onChange={e => setFormData({ ...formData, email: e.target.value })}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          required
-          value={formData.password}
-          onChange={e => setFormData({ ...formData, password: e.target.value })}
-        />
-        <button className="login-btn" type="submit">Login</button>
-        {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+      <h2>Login to bhavyadecidenameplease</h2>
+      <form onSubmit={handleLogin}>
+        <div className="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        {error && <div className="error-message">{error}</div>}
+        {message && <div className="success-message">{message}</div>}
+        <button type="submit" className="login-btn">Login</button>
       </form>
       <p>
-        Don't have an account?{' '}
-        <Link className="login-link" to="/signup">
-          Sign up
-        </Link>
+        Don't have an account? <a href="/signup">Sign up</a>
       </p>
     </div>
   );

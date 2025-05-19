@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.error-message {
+  color: #d9534f;
+  margin: 10px 0;
+}
+
+.success-message {
+  color: #5cb85c;
+  margin: 10px 0;
+}

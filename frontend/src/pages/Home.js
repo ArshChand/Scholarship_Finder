@@ -1,66 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import './Home.css';
+import React, { useRef, useEffect } from 'react';
+import './slider.css';
+
+import img1 from '../assets/img1.jpg';
+import img2 from '../assets/img2.jpg';
+import img3 from '../assets/img3.jpg';
+import img4 from '../assets/img4.jpg';
+
+const images = [
+  { src: img2, type: 'FLOWER' },
+  { src: img1, type: 'NATURE' },
+  { src: img3, type: 'PLANT' },
+  { src: img4, type: 'NATURE' },
+];
 
 function Home() {
-  const [scholarships, setScholarships] = useState([]);
-  const [showRecommended, setShowRecommended] = useState(true);
+  const sliderRef = useRef(null);
+  const listRef = useRef(null);
+  const thumbnailRef = useRef(null);
 
   useEffect(() => {
-    // Replace with API call
-    const mockScholarships = [
-      {
-        id: 1,
-        title: 'NMF General Scholarships',
-        deadline: '2025-05-18',
-        amount: '$25,000',
-        description: 'National Medical Fellowships…'
-      },
-      {
-        id: 2,
-        title: 'USTA Foundation Scholarships',
-        deadline: '2025-05-19',
-        amount: '$80,000',
-        description: 'USTA Foundation awards…'
-      }
-    ];
+    const thumbnails = thumbnailRef.current.querySelectorAll('.item');
+    if (thumbnails.length) {
+      thumbnailRef.current.appendChild(thumbnails[0]);
+    }
 
-    setScholarships(mockScholarships);
+    const interval = setInterval(() => {
+      moveSlider('next');
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, []);
 
+  const moveSlider = (direction) => {
+    const slider = sliderRef.current;
+    const sliderItems = listRef.current.querySelectorAll('.item');
+    const thumbnailItems = thumbnailRef.current.querySelectorAll('.item');
+
+    if (direction === 'next') {
+      listRef.current.appendChild(sliderItems[0]);
+      thumbnailRef.current.appendChild(thumbnailItems[0]);
+      slider.classList.add('next');
+    } else {
+      listRef.current.prepend(sliderItems[sliderItems.length - 1]);
+      thumbnailRef.current.prepend(thumbnailItems[thumbnailItems.length - 1]);
+      slider.classList.add('prev');
+    }
+
+    slider.addEventListener(
+      'animationend',
+      () => {
+        slider.classList.remove(direction);
+      },
+      { once: true }
+    );
+  };
+
   return (
-    <div className="home-container">
-      <div className="home-header">
-        <h2>Recommended Scholarships</h2>
-        <label className="toggle-switch">
-          <input
-            type="checkbox"
-            checked={showRecommended}
-            onChange={() => setShowRecommended(!showRecommended)}
-          />
-          <span className="slider round"></span>
-        </label>
-      </div>
-
-      <div className="filters">
-        <button>STEM</button>
-        <button>Arts</button>
-        <button>Need-Based</button>
-        <button>Merit-Based</button>
-      </div>
-
-      <div className="scholarship-list">
-        {scholarships.map((scholarship) => (
-          <div key={scholarship.id} className="scholarship-card">
-            <h3>{scholarship.title}</h3>
-            <p><strong>Amount:</strong> {scholarship.amount}</p>
-            <p><strong>Deadline:</strong> {scholarship.deadline}</p>
-            <p>{scholarship.description}</p>
+    <div className="slider" ref={sliderRef}>
+      <div className="list" ref={listRef}>
+        {images.map((img, index) => (
+          <div className="item" key={index}>
+            <img src={img.src} alt={`slide-${index}`} />
+            <div className="content">
+              <div className="title">MAGIC SLIDER</div>
+              <div className="type">{img.type}</div>
+              <div className="description">
+                Discover the best scholarships around the world for your future education!
+              </div>
+              <div className="button">
+                <button>SEE MORE</button>
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
-      <div className="view-all">
-        <a href="/all">→ View All Scholarships</a>
+      <div className="thumbnail" ref={thumbnailRef}>
+        {images.map((img, index) => (
+          <div className="item" key={`thumb-${index}`}>
+            <img src={img.src} alt={`thumb-${index}`} />
+          </div>
+        ))}
       </div>
     </div>
   );

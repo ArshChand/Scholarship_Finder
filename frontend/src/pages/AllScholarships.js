@@ -1,37 +1,69 @@
 // src/pages/AllScholarships.js
 import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import './AllScholarships.css';
 
 const AllScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
+  const [displayed, setDisplayed] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch scholarships on mount
   useEffect(() => {
     fetch('http://localhost:5000/scholarships/all')
       .then((res) => res.json())
       .then((data) => {
         setScholarships(data);
+        setDisplayed(data);
         setLoading(false);
       })
-      .catch((error) => {
-        console.error('Error fetching scholarships:', error);
+      .catch((err) => {
+        console.error('Error fetching scholarships:', err);
         setLoading(false);
       });
   }, []);
 
-  if (loading) return <p>Loading scholarships...</p>;
+  // Shuffle every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const shuffled = [...scholarships].sort(() => Math.random() - 0.5);
+      setDisplayed(shuffled);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [scholarships]);
+
+  if (loading) return <p style={{ textAlign: 'center' }}>Loading scholarships...</p>;
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>All Scholarships</h1>
-      {scholarships.map((scholarship) => (
-        <div key={scholarship._id} style={{ border: '1px solid #ccc', padding: '1rem', marginBottom: '1rem' }}>
-          <h2>{scholarship.title}</h2>
-          <p><strong>Amount:</strong> {scholarship.amount}</p>
-          <p><strong>Deadline:</strong> {scholarship.deadline}</p>
-          <p><strong>Description:</strong> {scholarship.description}</p>
-          <a href={scholarship.applicationLink} target="_blank" rel="noopener noreferrer">Apply Now</a>
-        </div>
-      ))}
+    <div className="scholarships-container">
+      <div className="filters">
+        {/* You can put filters here if needed */}
+      </div>
+
+      <motion.div layout className="scholarship-grid">
+        <AnimatePresence>
+          {displayed.slice(0, 8).map((scholarship) => (
+            <motion.div
+              key={scholarship._id}
+              layout
+              className="scholarship-card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y:-20 }}
+              transition={{ duration: 1 }}
+            >
+              <h3>{scholarship.title}</h3>
+              <p><strong>Amount:</strong> {scholarship.amount}</p>
+              <p><strong>Deadline:</strong> {scholarship.deadline}</p>
+              <p>{scholarship.description?.slice(0, 100)}...</p>
+              <a href={scholarship.applicationLink} target="_blank" rel="noopener noreferrer">
+                Apply Now
+              </a>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 };

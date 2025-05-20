@@ -64,15 +64,23 @@ router.post('/complete-profile', async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;
 
-    const { location, age, gpa } = req.body;
-    if (!location || !age || !gpa) {
-      return res.status(400).json({ message: 'All profile fields are required' });
+    const { location, gpa, courseOfStudy, incomeStatus, specialCategory } = req.body;
+
+    if (!location || !gpa || !courseOfStudy) {
+      return res.status(400).json({ message: 'Location, GPA, and course of study are required' });
     }
 
     // Update user by id
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { location, age, gpa, isProfileComplete: true },
+      {
+        location,
+        gpa,
+        courseOfStudy,
+        incomeStatus: incomeStatus || '',
+        specialCategory: specialCategory || '',
+        isProfileComplete: true,
+      },
       { new: true }
     );
 

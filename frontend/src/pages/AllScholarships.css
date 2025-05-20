@@ -1,52 +1,98 @@
 .scholarships-container {
-  max-width: 1000px;
-  margin: auto;
-  padding: 20px;
+  width: 100vw; /* full viewport width */
+  padding: 40px 5%;
+  background: linear-gradient(135deg, #f5f7fa, #e0eafc);
+  animation: bgPulse 10s ease-in-out infinite;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+@keyframes bgPulse {
+  0% { background: linear-gradient(135deg, #f5f7fa, #e0eafc); }
+  50% { background: linear-gradient(135deg, #dfe9f3, #ffffff); }
+  100% { background: linear-gradient(135deg, #f5f7fa, #e0eafc); }
 }
 
 .filters {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+  justify-content: center;
 }
 
-.filters input, .filters select {
-  padding: 8px;
+.filters input,
+.filters select {
+  padding: 10px 14px;
   font-size: 14px;
-  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: box-shadow 0.3s;
+}
+
+.filters input:focus,
+.filters select:focus {
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+  outline: none;
 }
 
 .scholarship-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+
+  gap: 24px;
+  transition: all 0.5s ease-in-out;
+
+  justify-content: center; /* Add this */
 }
 
+
 .scholarship-card {
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 16px;
+  padding: 20px;
   background: white;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  border-left: 5px solid #007bff;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+  overflow: hidden;
+
+  /* Optional fade effect */
+  opacity: 1;
+  transform: translateY(0);
+  will-change: transform, opacity;
+}
+
+.scholarship-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 123, 255, 0.15);
 }
 
 .scholarship-card h3 {
-  font-size: 18px;
-  margin: 0 0 10px;
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #222;
 }
 
 .scholarship-card p {
-  margin: 4px 0;
+  margin: 6px 0;
+  color: #444;
 }
 
 .scholarship-card a {
   display: inline-block;
-  margin-top: 8px;
+  margin-top: 12px;
   background: #007bff;
   color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
   text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.scholarship-card a:hover {
+  background: #0056b3;
 }
 
 .status {
@@ -63,4 +109,9 @@
 
 .status.expired {
   color: red;
+}
+
+/* Optional: smoother fade-in/out for animation using framer-motion */
+.scholarship-card.motion-card {
+  transition: all 0.5s ease-in-out;
 }

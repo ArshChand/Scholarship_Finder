@@ -64,9 +64,9 @@ router.post('/complete-profile', async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;
 
-    const { location, gpa, courseOfStudy, incomeStatus, specialCategory } = req.body;
+    const { location, gpa, course } = req.body;
 
-    if (!location || !gpa || !courseOfStudy) {
+    if (!location || !gpa || !course) {
       return res.status(400).json({ message: 'Location, GPA, and course of study are required' });
     }
 
@@ -75,13 +75,11 @@ router.post('/complete-profile', async (req, res) => {
       userId,
       {
         location,
-        gpa,
-        courseOfStudy,
-        incomeStatus: incomeStatus || '',
-        specialCategory: specialCategory || '',
-        isProfileComplete: true,
+        gpa: parseFloat(gpa),
+        course,
+        isProfileComplete: true
       },
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     if (!updatedUser) {

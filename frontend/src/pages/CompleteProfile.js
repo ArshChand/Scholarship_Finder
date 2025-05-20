@@ -11,9 +11,7 @@ const CompleteProfile = () => {
 
   const [location, setLocation] = useState('');
   const [gpa, setGpa] = useState('');
-  const [courseOfStudy, setCourseOfStudy] = useState('');
-  const [incomeStatus, setIncomeStatus] = useState('');
-  const [specialCategory, setSpecialCategory] = useState('');
+  const [course, setCourse] = useState('');
   const [error, setError] = useState('');
 
   const locationOptions = [
@@ -42,10 +40,23 @@ const CompleteProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+      let gpaValue;
+      if (gpa === "Below 1") {
+        gpaValue = 0.5; // Or whatever value you want to represent this
+      } else {
+        gpaValue = parseFloat(gpa.split('-')[0]);
+      }
+
     const token = localStorage.getItem('token');
 
-    if (!location || !gpa || !courseOfStudy) {
+    if (!location || !gpa || !course) {
       setError('Please fill all required fields.');
+      return;
+    }
+
+    if (isNaN(gpaValue) || gpaValue < 0 || gpaValue > 4) {
+      setError('Please enter a valid GPA between 0 and 4');
       return;
     }
 
@@ -56,7 +67,7 @@ const CompleteProfile = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ location, gpa, courseOfStudy, incomeStatus, specialCategory }),
+        body: JSON.stringify({ location, gpa: gpaValue, course}),
       });
 
         const data = await response.json();
@@ -81,29 +92,28 @@ const CompleteProfile = () => {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Course of Study</label>
-          <select value={courseOfStudy} onChange={(e) => setCourseOfStudy(e.target.value)} required>
+          <select value={course} onChange={(e) => setCourse(e.target.value)} required>
             <option value="">Select course</option>
-            <option value="B.Tech">B.Tech</option>
-            <option value="M.Tech">M.Tech</option>
-            <option value="B.Sc">B.Sc</option>
-            <option value="M.Sc">M.Sc</option>
-            <option value="MBA">MBA</option>
-            <option value="PhD">PhD</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Medicine">Medicine</option>
+            <option value="Business">Business</option>
+            <option value="Arts">Arts</option>
           </select>
         </div>
 
         <div className="form-group">
-          <label>GPA (out of 10)</label>
-          <select value={gpa} onChange={(e) => setGpa(e.target.value)} required>
-            <option value="">Select GPA range</option>
-            <option value="3.6-4">3.6-4</option>
-            <option value="3.1-3.5">3.1-3.5</option>
-            <option value="2.6-3">2.6-3</option>
-            <option value="2.1-2.5">2.1-2.5</option>
-            <option value="1.6-2">1.6-2</option>
-            <option value="1-1.5">1-1.5</option>
-            <option value="Below 1">Below 1</option>
-          </select>
+          <label>GPA (out of 4)</label>
+          <input
+            type="number"
+            value={gpa}
+            onChange={(e) => setGpa(e.target.value)}
+            min="0"
+            max="4"
+            step="0.1"
+            placeholder="Enter your exact GPA"
+            required
+          />
+          <small className="input-hint">e.g., 3.5, 3.75, 4.0</small>
         </div>
 
         <div className="form-group">
@@ -119,27 +129,6 @@ const CompleteProfile = () => {
                 {country}
               </option>
             ))}
-          </select>
-        </div>
-
-
-        <div className="form-group">
-          <label>Income Status (optional)</label>
-          <select value={incomeStatus} onChange={(e) => setIncomeStatus(e.target.value)}>
-            <option value="">Select income status</option>
-            <option value="Low">Low</option>
-            <option value="Middle">Middle</option>
-            <option value="High">High</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Special Category (optional)</label>
-          <select value={specialCategory} onChange={(e) => setSpecialCategory(e.target.value)}>
-            <option value="">None</option>
-            <option value="SC/ST">SC/ST</option>
-            <option value="OBC">OBC</option>
-            <option value="PWD">Person with Disability (PWD)</option>
           </select>
         </div>
 

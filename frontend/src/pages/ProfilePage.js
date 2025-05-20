@@ -29,9 +29,7 @@ const ProfilePage = () => {
             <li><strong>Email:</strong> {userData.email}</li>
             <li><strong>GPA:</strong> {userData.gpa}</li>
             <li><strong>Location:</strong> {userData.location}</li>
-            <li><strong>Course of Study:</strong> {userData.courseOfStudy}</li>
-            <li><strong>Income Status:</strong> {userData.incomeStatus || 'Not specified'}</li>
-            <li><strong>Special Category:</strong> {userData.specialCategory || 'Not specified'}</li>
+            <li><strong>Course of Study:</strong> {userData.course}</li>
        </ul>
     </div>
   );

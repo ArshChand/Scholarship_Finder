@@ -1,4 +1,4 @@
-// src/pages/AllScholarships.js
+
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './AllScholarships.css';
@@ -10,7 +10,7 @@ const AllScholarships = () => {
 
   // Fetch scholarships on mount
   useEffect(() => {
-    fetch('http://localhost:5000/scholarships/all')
+    fetch('http://localhost:5000/api/scholarships/all')
       .then((res) => res.json())
       .then((data) => {
         setScholarships(data);
@@ -56,8 +56,9 @@ const AllScholarships = () => {
               <h3>{scholarship.title}</h3>
               <p><strong>Amount:</strong> {scholarship.amount}</p>
               <p><strong>Deadline:</strong> {scholarship.deadline}</p>
+              <p><strong>Req. GPA:</strong> {scholarship.gpa}</p>
               <p>{scholarship.description?.slice(0, 100)}...</p>
-              <a href={scholarship.applicationLink} target="_blank" rel="noopener noreferrer">
+              <a href={scholarship.url} target="_blank" rel="noopener noreferrer">
                 Apply Now
               </a>
             </motion.div>

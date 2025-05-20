@@ -1,0 +1,136 @@
+/* Container */
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 80px auto 40px;
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+}
+
+/* Header */
+.login-container h2 {
+  margin-bottom: 25px;
+  font-size: 28px;
+  color: #212529;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #495057;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.8px solid #ced4da;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.25s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 6px rgba(13, 110, 253, 0.4);
+}
+
+/* Button */
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.15s ease;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+}
+
+.login-btn:hover {
+  background-color: #0848c3;
+  transform: translateY(-2px);
+}
+
+.login-btn:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* Error message */
+.error-message {
+  color: #d6336c;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  animation: shake 0.3s ease;
+}
+
+/* Success message */
+.success-message {
+  color: #198754;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Link for Signup */
+.login-container p {
+  margin-top: 25px;
+  font-size: 15px;
+  color: #6c757d;
+}
+
+.login-container a {
+  color: #0d6efd;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.25s ease;
+}
+
+.login-container a:hover {
+  text-decoration: underline;
+  color: #0848c3;
+}
+
+/* Small shake animation for errors */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 450px) {
+  .login-container {
+    margin: 40px 15px;
+    padding: 25px 20px;
+  }
+
+  .login-btn {
+    font-size: 18px;
+    padding: 12px;
+  }
+}

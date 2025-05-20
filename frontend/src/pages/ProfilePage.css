@@ -1,0 +1,35 @@
+/* ProfilePage.css */
+
+.container {
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #111;
+}
+
+.container li {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid #ccc;
+  font-size: 1.05rem;
+  display: flex;
+  justify-content: space-between;
+  color: #212529;
+}
+
+.contaner li strong {
+  color: #000; /* bold and dark */
+  font-weight: 600;
+}
+
+.container li:last-child {
+  border-bottom: none;
+}

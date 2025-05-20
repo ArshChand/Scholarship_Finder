@@ -76,3 +76,19 @@
 .login-container a:hover {
     text-decoration: underline;
 }
+
+/* Add to existing CSS */
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.input-hint {
+  display: block;
+  margin-top: 5px;
+  color: #666;
+  font-size: 0.85em;
+}

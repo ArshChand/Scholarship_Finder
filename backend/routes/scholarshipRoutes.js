@@ -4,7 +4,7 @@ const router = express.Router();
 const { fetchScholarshipsCom } = require('../controllers/scholarshipController');
 const { getAllScholarships } = require('../controllers/scholarshipController');
 
-router.get('/scrape/scholarships-com', fetchScholarshipsCom);
+router.get('/fetch', fetchScholarshipsCom);
 router.get('/all', getAllScholarships);
 
 module.exports = router;

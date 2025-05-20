@@ -1,5 +1,5 @@
-const Scholarship = require('../models/Scholarship');
-const scrapeScholarshipsCom = require('../scrapers/scholarshipsComScraper');
+const Scholarship = require('../models/scholarship');
+const scrapeScholarshipsCom = require('../scrapers/scholarshipScraper');
 
 function convertDeadlineToDate(deadlineStr) {
   return new Date(deadlineStr);
@@ -28,7 +28,7 @@ const fetchScholarshipsCom = async (req, res) => {
     // Optional: prevent duplicate insertions by checking title + source
     for (let item of scraped) {
       await Scholarship.updateOne(
-        { title: item.title, source: item.source },
+        { title: item.title},
         { $set: item },
         { upsert: true }
       );
@@ -44,4 +44,3 @@ module.exports = {
   fetchScholarshipsCom,
   getAllScholarships
 };
-

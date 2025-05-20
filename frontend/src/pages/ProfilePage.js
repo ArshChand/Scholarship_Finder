@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext'; // ✅ import useAuth
+import './ProfilePage.css'; 
 
 const ProfilePage = () => {
   const { token } = useAuth(); // ✅ get token from context
@@ -24,10 +25,12 @@ const ProfilePage = () => {
     <div className="container">
       <h2>My Profile</h2>
       <ul>
-        <li><strong>GPA:</strong> {userData.gpa}</li>
-        <li><strong>Location:</strong> {userData.location}</li>
-        <li><strong>Age:</strong> {userData.age}</li>
-      </ul>
+            <li><strong>Name:</strong> {userData.name}</li>
+            <li><strong>Email:</strong> {userData.email}</li>
+            <li><strong>GPA:</strong> {userData.gpa}</li>
+            <li><strong>Location:</strong> {userData.location}</li>
+            <li><strong>Course of Study:</strong> {userData.course}</li>
+       </ul>
     </div>
   );
 };

@@ -4,55 +4,86 @@ import '../components/Signup.css';
 import { useAuth } from '../context/AuthContext';
 
 
+
 const CompleteProfile = () => {
-  const [location, setLocation] = useState('');
-  const [age, setAge] = useState('');
-  const [gpa, setGpa] = useState('');
-  const [error, setError] = useState('');
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const { login } = useAuth();
+  const [location, setLocation] = useState('');
+  const [gpa, setGpa] = useState('');
+  const [course, setCourse] = useState('');
+  const [error, setError] = useState('');
+
+  const locationOptions = [
+    "Alabama", "Alaska", "American Samoa", "Arizona", "Arkansas",
+    "Armed Forces Americas", "Armed Forces Europe", "Armed Forces Pacific",
+    "California", "Colorado", "Connecticut", "Delaware",
+    "Federated States of Micronesia", "Florida", "Georgia", "Guam",
+    "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
+    "Kansas", "Kentucky", "Louisiana", "Maine", "Marshall Islands",
+    "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+    "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire",
+    "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota",
+    "Northern Mariana Islands", "Ohio", "Oklahoma", "Oregon",
+    "Pennsylvania", "Puerto Rico", "Rhode Island",
+    "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah",
+    "Vermont", "Virgin Islands, U.S.", "Virginia",
+    "Washington", "Washington DC", "West Virginia", "Wisconsin", "Wyoming"
+  ];
 
   useEffect(() => {
     const email = localStorage.getItem('signupEmail');
     if (!email) {
-      navigate('/signup'); // fallback if email is missing
+      navigate('/signup');
     }
   }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+      let gpaValue;
+      if (gpa === "Below 1") {
+        gpaValue = 0.5; // Or whatever value you want to represent this
+      } else {
+        gpaValue = parseFloat(gpa.split('-')[0]);
+      }
+
     const token = localStorage.getItem('token');
 
-    if (!location || !age || !gpa) {
-        setError('Please fill all fields.');
-        return;
+    if (!location || !gpa || !course) {
+      setError('Please fill all required fields.');
+      return;
+    }
+
+    if (isNaN(gpaValue) || gpaValue < 0 || gpaValue > 4) {
+      setError('Please enter a valid GPA between 0 and 4');
+      return;
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/auth/complete-profile', {
+      const response = await fetch('http://localhost:5000/api/auth/complete-profile', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({location, age, gpa }),
-        });
+        body: JSON.stringify({ location, gpa: gpaValue, course}),
+      });
 
         const data = await response.json();
 
-        if (response.ok) {
+      if (response.ok) {
         localStorage.removeItem('signupEmail');
-        login(token);
+        login(token); // reinitialize context if needed
         navigate('/');
-        } else {
+      } else {
         setError(data.message || 'Profile update failed.');
-        }
+      }
     } catch (err) {
-        console.error('Profile update error:', err);
-        setError('Something went wrong. Please try again.');
+      console.error('Profile update error:', err);
+      setError('Something went wrong. Please try again.');
     }
-    };
+  };
 
 
   return (
@@ -60,17 +91,47 @@ const CompleteProfile = () => {
       <h2>Complete Your Profile</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
+          <label>Course of Study</label>
+          <select value={course} onChange={(e) => setCourse(e.target.value)} required>
+            <option value="">Select course</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Medicine">Medicine</option>
+            <option value="Business">Business</option>
+            <option value="Arts">Arts</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>GPA (out of 4)</label>
+          <input
+            type="number"
+            value={gpa}
+            onChange={(e) => setGpa(e.target.value)}
+            min="0"
+            max="4"
+            step="0.1"
+            placeholder="Enter your exact GPA"
+            required
+          />
+          <small className="input-hint">e.g., 3.5, 3.75, 4.0</small>
+        </div>
+
+        <div className="form-group">
           <label>Location</label>
-          <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} required />
+          <select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            required
+          >
+            <option value="">Select your location</option>
+            {locationOptions.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
         </div>
-        <div className="form-group">
-          <label>Age</label>
-          <input type="number" value={age} onChange={(e) => setAge(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label>GPA</label>
-          <input type="number" step="0.01" value={gpa} onChange={(e) => setGpa(e.target.value)} required />
-        </div>
+
         {error && <div className="error-message">{error}</div>}
         <button type="submit" className="login-btn">Submit</button>
       </form>
@@ -79,3 +140,13 @@ const CompleteProfile = () => {
 };
 
 export default CompleteProfile;
+
+
+
+  
+
+    
+
+      
+
+  

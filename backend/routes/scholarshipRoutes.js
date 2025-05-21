@@ -1,10 +1,14 @@
-// backend/routes/scholarshipRoutes.js
 const express = require('express');
 const router = express.Router();
-const { fetchScholarshipsCom } = require('../controllers/scholarshipController');
-const { getAllScholarships } = require('../controllers/scholarshipController');
+const {
+  fetchScholarshipsCom,
+  getAllScholarships,
+  getScholarshipsForStudent
+} = require('../controllers/scholarshipController');
+const requireAuth = require('../middleware/requireAuth');
 
-router.get('/fetch', fetchScholarshipsCom);
-router.get('/all', getAllScholarships);
+router.get('/fetch', fetchScholarshipsCom); // For admin or cron usage
+router.get('/all', getAllScholarships); // Public/all users
+router.get('/my-scholarships', requireAuth, getScholarshipsForStudent); // 🔐 Protected
 
 module.exports = router;

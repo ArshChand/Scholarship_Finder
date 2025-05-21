@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext'; // ✅ import useAuth
+import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom'; // ✅ import Link
 import './ProfilePage.css'; 
 
 const ProfilePage = () => {
-  const { token } = useAuth(); // ✅ get token from context
+  const { token } = useAuth();
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -12,7 +13,7 @@ const ProfilePage = () => {
 
     axios.get('/api/auth/complete-profile', {
       headers: {
-        Authorization: `Bearer ${token}`, // ✅ include token
+        Authorization: `Bearer ${token}`,
       }
     })
     .then(res => setUserData(res.data))
@@ -25,12 +26,19 @@ const ProfilePage = () => {
     <div className="container">
       <h2>My Profile</h2>
       <ul>
-            <li><strong>Name:</strong> {userData.name}</li>
-            <li><strong>Email:</strong> {userData.email}</li>
-            <li><strong>GPA:</strong> {userData.gpa}</li>
-            <li><strong>Location:</strong> {userData.location}</li>
-            <li><strong>Course of Study:</strong> {userData.course}</li>
-       </ul>
+        <li><strong>Name:</strong> {userData.name}</li>
+        <li><strong>Email:</strong> {userData.email}</li>
+        <li><strong>GPA:</strong> {userData.gpa}</li>
+        <li><strong>Location:</strong> {userData.location}</li>
+        <li><strong>Course of Study:</strong> {userData.course}</li>
+      </ul>
+
+      {/* ✅ Link to My Scholarships page */}
+      <div style={{ marginTop: '20px' }}>
+        <Link to="/my-scholarships" className="btn btn-primary">
+          View My Scholarships
+        </Link>
+      </div>
     </div>
   );
 };

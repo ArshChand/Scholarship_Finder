@@ -7,13 +7,14 @@ import Login from './components/Login';
 import AllScholarships from './pages/AllScholarships';
 import Home from './pages/Home';
 import ProfilePage from './pages/ProfilePage';
+import MyScholarships from './pages/MyScholarships'; // ✅ New Import
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 
 // Layout component for conditional navbar
 const Layout = ({ children }) => {
   const location = useLocation();
-  const hideNavbar = ['/login', '/signup','/complete-profile'].includes(location.pathname);
+  const hideNavbar = ['/login', '/signup', '/complete-profile'].includes(location.pathname);
   return (
     <>
       {!hideNavbar && <Navbar />}
@@ -29,7 +30,6 @@ const AppRoutes = () => (
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/complete-profile" element={<CompleteProfile />} />
-
 
       {/* Private Routes */}
       <Route
@@ -53,6 +53,14 @@ const AppRoutes = () => (
         element={
           <PrivateRoute>
             <ProfilePage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/my-scholarships" // ✅ New Route
+        element={
+          <PrivateRoute>
+            <MyScholarships />
           </PrivateRoute>
         }
       />

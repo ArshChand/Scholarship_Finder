@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 const MyScholarships = () => {
+  const { token , loading } = useAuth();
   const [scholarships, setScholarships] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
+    if (loading) return;
+    if (!token) {
+        console.warn('No token found, skipping scholarship fetch.');
+        setFetching(false);
+        return;
+    }
     const fetchMyScholarships = async () => {
       try {
-        const token = localStorage.getItem('token'); // adjust if you're storing token differently
-
-        const res = await axios.get('/api/scholarships/my-scholarships', {
+        const res = await axios.get('http://localhost:5000/api/scholarships/mysch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -20,14 +26,14 @@ const MyScholarships = () => {
       } catch (err) {
         console.error('Failed to fetch scholarships', err);
       } finally {
-        setLoading(false);
+         setFetching(false);
       }
     };
 
     fetchMyScholarships();
-  }, []);
+  }, [token,loading]);
 
-  if (loading) return <p>Loading your scholarships...</p>;
+  if (loading||fetching) return <p>Loading your scholarships...</p>;
 
   return (
     <div>
@@ -40,6 +46,8 @@ const MyScholarships = () => {
             <li key={scholarship._id}>
               <strong>{scholarship.title}</strong> <br />
               Deadline: {scholarship.deadline} <br />
+              Req. GPA: {scholarship.gpa} <br />
+              Amount: {scholarship.amount} <br />
               Location: {scholarship.location}
               <hr />
             </li>

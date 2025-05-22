@@ -27,16 +27,22 @@ async function scrapeScholarshipsCom() {
     await autoScroll(page);
 
     const scholarships = await page.evaluate(() => {
-      const rows = Array.from(document.querySelectorAll('table#award-grid tbody tr')).slice(0,10);
+      const rows = Array.from(document.querySelectorAll('table#award-grid tbody tr')).slice(0,2);
       return rows.map(row => {
         const linkEl = row.querySelector('a.blacklink');
         const title = linkEl?.innerText?.trim() || '';
         const url = linkEl ? 'https://www.scholarships.com' + linkEl.getAttribute('href') : '';
 
-        const amount = row.querySelector('td:nth-child(3)')?.innerText?.trim() || '';
+        const amount= row.querySelector('td:nth-child(3)')?.innerText?.trim() || '';
+        let amountValue = null;
+
+        if (amount.startsWith('$')) {
+          amountValue = Number(amount.replace(/[^0-9]/g, ''));  // e.g., "$3,000" -> 3000
+        }
+
         const deadline = row.querySelector('td:nth-child(4)')?.innerText?.trim().replace('Due Date:', '').trim() || '';
 
-        return { title, url, amount, deadline };
+        return { title, url, amount, amountValue, deadline };
       });
     });
 

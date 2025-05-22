@@ -28,6 +28,9 @@ function Navbar() {
         <li className={location.pathname === '/all' ? 'active' : ''}>
           <Link to="/all">All Scholarships</Link>
         </li>
+        <li className={location.pathname === '/mysch' ? 'active' : ''}>
+          <Link to="/mysch">My Scholarships</Link>
+        </li>
         {user && (
           <li className={location.pathname === '/profile' ? 'active' : ''}>
             <Link to="/profile">My Profile</Link>

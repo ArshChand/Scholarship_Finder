@@ -12,6 +12,7 @@ const CompleteProfile = () => {
   const [location, setLocation] = useState('');
   const [gpa, setGpa] = useState('');
   const [course, setCourse] = useState('');
+  const [amount, setAmount] = useState('');
   const [error, setError] = useState('');
 
   const locationOptions = [
@@ -50,7 +51,7 @@ const CompleteProfile = () => {
 
     const token = localStorage.getItem('token');
 
-    if (!location || !gpa || !course) {
+    if (!location || !gpa || !course || !amount) {
       setError('Please fill all required fields.');
       return;
     }
@@ -67,7 +68,7 @@ const CompleteProfile = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ location, gpa: gpaValue, course}),
+        body: JSON.stringify({ location, gpa: gpaValue, course, amount}),
       });
 
         const data = await response.json();
@@ -111,6 +112,20 @@ const CompleteProfile = () => {
             max="4"
             step="0.1"
             placeholder="Enter your exact GPA"
+            required
+          />
+          <small className="input-hint">e.g., 3.5, 3.75, 4.0</small>
+        </div>
+
+        <div className="form-group">
+          <label>Expected Scholarship Amount(USD)</label>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => {
+              setAmount(e.target.value);
+            }}
+            placeholder="Please enter expected amount"
             required
           />
           <small className="input-hint">e.g., 3.5, 3.75, 4.0</small>

@@ -5,10 +5,9 @@ const {
   getAllScholarships,
   getScholarshipsForStudent
 } = require('../controllers/scholarshipController');
-const requireAuth = require('../middleware/requireAuth');
 
 router.get('/fetch', fetchScholarshipsCom); // For admin or cron usage
 router.get('/all', getAllScholarships); // Public/all users
-router.get('/my-scholarships', requireAuth, getScholarshipsForStudent); // 🔐 Protected
+router.get('/mysch', getScholarshipsForStudent); // 🔐 Protected
 
 module.exports = router;

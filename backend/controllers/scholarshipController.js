@@ -1,6 +1,8 @@
 const Scholarship = require('../models/scholarship');
 const User = require('../models/User'); // Changed from Student to User
 const scrapeScholarshipsCom = require('../scrapers/scholarshipScraper');
+const jwt = require('jsonwebtoken');
+
 
 function convertDeadlineToDate(deadlineStr) {
   return new Date(deadlineStr);
@@ -43,33 +45,38 @@ const fetchScholarshipsCom = async (req, res) => {
 
 // UPDATED: Get scholarships relevant to the logged-in user
 const getScholarshipsForStudent = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const user = await User.findById(userId);
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ message: 'No token provided' });
+    
+  const token = authHeader.split(' ')[1];
+    
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.id).select('-password');
+      
+      if (!user) return res.status(404).json({ message: 'User not found' });
+      
+      const { gpa, course, location, amount, amountValue} = user;
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      const query = {
+        gpa: { $lte: gpa },
+        amountValue: { $gte: amount },
+      };
+
+      const matchedScholarships = await Scholarship.find(query);
+
+      matchedScholarships.sort((a, b) => {
+        const dateA = convertDeadlineToDate(a.deadline);
+        const dateB = convertDeadlineToDate(b.deadline);
+        return dateA - dateB;
+      });
+
+      res.status(200).json(matchedScholarships);
+    } 
+    catch (err) {
+      console.error(err);
+      res.status(401).json({ message: 'Invalid token' });
     }
-
-    const { gpa, course, location } = user;
-
-    const matchedScholarships = await Scholarship.find({
-      minGPA: { $lte: gpa },
-      eligibleCourses: course,       // or { $in: [course] } if it's an array
-      location: location
-    });
-
-    matchedScholarships.sort((a, b) => {
-      const dateA = convertDeadlineToDate(a.deadline);
-      const dateB = convertDeadlineToDate(b.deadline);
-      return dateA - dateB;
-    });
-
-    res.status(200).json(matchedScholarships);
-  } catch (error) {
-    console.error('Error filtering scholarships:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
 };
 
 module.exports = {

@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
     }
   },
 
+  amount: {
+    type: Number
+  },
+
   location: {
     type: String,
     trim: true

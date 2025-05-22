@@ -29,13 +29,14 @@ const ProfilePage = () => {
         <li><strong>Name:</strong> {userData.name}</li>
         <li><strong>Email:</strong> {userData.email}</li>
         <li><strong>GPA:</strong> {userData.gpa}</li>
+        <li><strong>Expected Amount:</strong> ${userData.amount}</li>
         <li><strong>Location:</strong> {userData.location}</li>
         <li><strong>Course of Study:</strong> {userData.course}</li>
       </ul>
 
       {/* ✅ Link to My Scholarships page */}
       <div style={{ marginTop: '20px' }}>
-        <Link to="/my-scholarships" className="btn btn-primary">
+        <Link to="/mysch" className="btn btn-primary">
           View My Scholarships
         </Link>
       </div>

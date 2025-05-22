@@ -4,6 +4,7 @@ const scholarshipSchema = new mongoose.Schema({
   title: { type: String, required: true },
   url: { type: String, required: true, unique: true },
   amount: String,
+  amountValue: Number,
   deadline: String,
   description: String,
   gpa: Number,

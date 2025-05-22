@@ -57,7 +57,7 @@ const AppRoutes = () => (
         }
       />
       <Route
-        path="/my-scholarships" // ✅ New Route
+        path="/mysch" // ✅ New Route
         element={
           <PrivateRoute>
             <MyScholarships />

@@ -10,7 +10,7 @@ const GPA_PAGES = [
 ];
 async function scrapeScholarshipsCom() {
   const browser = await puppeteer.launch({
-    headless: false, // Set to true later once stable
+    headless: true, // Set to true later once stable
     defaultViewport: null,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });

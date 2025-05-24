@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const scrapeScholarshipsCom = require('./scrapers/scholarshipScraper')
 const Scholarship = require('./models/scholarship');
+const cron = require('node-cron');
 
 const scholarshipRoutes = require('./routes/scholarshipRoutes'); 
 const auth = require('./routes/auth'); 
@@ -28,15 +29,18 @@ app.use('/api/auth', auth); // Correct mounting
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, async () => {  
   console.log(`Server running on port ${PORT}`);
+});
 
-  try {
-    const results = await scrapeScholarshipsCom();
+cron.schedule('0 0 * * *', async () => {
+      console.log('Running scheduled scraper...');
+      try {
+        const results = await scrapeScholarshipsCom();
 
-    await Scholarship.deleteMany({});
-    await Scholarship.insertMany(results);
+        await Scholarship.deleteMany({});
+        await Scholarship.insertMany(results);
 
-    console.log(`Scraped and saved ${results.length} scholarships on startup.`);
-  } catch (err) {
-    console.error('Error running scraper or saving to DB:', err);
-  }
+        console.log(`Scraped and saved ${results.length} scholarships.`);
+      } catch (err) {
+        console.error('Scheduled scraper failed:', err);
+      }
 });

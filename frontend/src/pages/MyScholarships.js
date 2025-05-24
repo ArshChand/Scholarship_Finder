@@ -16,7 +16,7 @@ const MyScholarships = () => {
     }
     const fetchMyScholarships = async () => {
       try {
-        const res = await axios.get('https://scholarmatch.onrender.com/api/scholarships/mysch', {
+        const res = await axios.get('https://scholarship-finder-xtg6.onrender.com/api/scholarships/mysch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

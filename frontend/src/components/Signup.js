@@ -19,7 +19,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await fetch('https://scholarmatch.onrender.com/api/auth/signup', {
+      const response = await fetch('https://scholarship-finder-xtg6.onrender.com/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),

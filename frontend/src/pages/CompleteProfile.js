@@ -62,7 +62,7 @@ const CompleteProfile = () => {
     }
 
     try {
-      const response = await fetch('https://scholarmatch.onrender.com/api/auth/complete-profile', {
+      const response = await fetch('https://scholarship-finder-xtg6.onrender.com/api/auth/complete-profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

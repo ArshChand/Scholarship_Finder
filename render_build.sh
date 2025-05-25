@@ -7,7 +7,6 @@ npm install
 # Ensure Puppeteer downloads Chrome to the project-local cache
 npx puppeteer browsers install chrome
 
-# Copy the browser cache to the location Render expects at runtime
 PUPPETEER_CACHE_DIR=/opt/render/.cache/puppeteer
 mkdir -p $PUPPETEER_CACHE_DIR
 cp -R .cache/puppeteer/chrome $PUPPETEER_CACHE_DIR/

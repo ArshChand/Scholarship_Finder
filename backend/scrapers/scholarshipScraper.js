@@ -27,7 +27,7 @@ async function scrapeScholarshipsCom() {
     await autoScroll(page);
 
     const scholarships = await page.evaluate(() => {
-      const rows = Array.from(document.querySelectorAll('table#award-grid tbody tr')).slice(0,2);
+      const rows = Array.from(document.querySelectorAll('table#award-grid tbody tr')).slice(0,15);
       return rows.map(row => {
         const linkEl = row.querySelector('a.blacklink');
         const title = linkEl?.innerText?.trim() || '';

@@ -58,7 +58,7 @@ const MyScholarships = () => {
       String(sch.amount).replace(/[^0-9.]/g, '')
     );
 
-    const meetsGPA = !minGPA || parseFloat(sch.gpa) >= parseFloat(minGPA);
+    const meetsGPA = !minGPA || parseFloat(sch.gpa) <= parseFloat(minGPA);
     const meetsAmount = !minAmount || numericAmount >= parseFloat(minAmount);
 
     return meetsGPA && meetsAmount;
@@ -72,7 +72,7 @@ const MyScholarships = () => {
         <input
           type="number"
           step="0.1"
-          placeholder="Min GPA"
+          placeholder="GPA"
           value={minGPA}
           onChange={(e) => setMinGPA(e.target.value)}
         />

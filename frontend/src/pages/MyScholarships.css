@@ -1,0 +1,158 @@
+.my-scholarships-container {
+  width: 100vw;
+  padding: 40px 5%;
+  background: linear-gradient(135deg, #f5f7fa, #e0eafc);
+  animation: bgPulse 10s ease-in-out infinite;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+@keyframes bgPulse {
+  0% {
+    background: linear-gradient(135deg, #f5f7fa, #e0eafc);
+  }
+  50% {
+    background: linear-gradient(135deg, #dfe9f3, #ffffff);
+  }
+  100% {
+    background: linear-gradient(135deg, #f5f7fa, #e0eafc);
+  }
+}
+
+.my-scholarships-title {
+  font-size: 28px;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.my-scholarships-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  justify-content: center;
+}
+
+.my-scholarship-card {
+  border-radius: 16px;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  border-left: 5px solid #007bff;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  overflow: hidden;
+}
+
+.my-scholarship-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 123, 255, 0.15);
+}
+
+.my-scholarship-card strong {
+  font-size: 18px;
+  display: block;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.my-scholarship-card p {
+  margin: 4px 0;
+  color: #555;
+}
+
+.my-scholarship-empty {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
+  color: #888;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.filters input {
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: box-shadow 0.3s;
+}
+
+.filters input:focus {
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+  outline: none;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  text-align: center;
+  max-width: 400px;
+}
+
+.modal-content h2 {
+  color: #d9534f;
+  margin-bottom: 1rem;
+}
+
+.modal-content p {
+  color: #1e0403;
+  margin-bottom: 1rem;
+}
+
+.modal-content a {
+  display: block;
+  margin: 1rem 0;
+  color: #eceef0;
+  text-decoration: underline;
+}
+
+.modal-content button {
+  padding: 10px 16px;
+  background-color: #3e87d5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}

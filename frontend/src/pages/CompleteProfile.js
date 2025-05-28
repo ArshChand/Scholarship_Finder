@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../components/Signup.css';
+import './CompleteProfile.css';
 import { useAuth } from '../context/AuthContext';
 
 
@@ -62,7 +62,7 @@ const CompleteProfile = () => {
     }
 
     try {
-      const response = await fetch('https://scholarship-finder-xtg6.onrender.com/api/auth/complete-profile', {
+      const response = await fetch('http://localhost:5000/api/auth/complete-profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,35 +1,60 @@
-/* ProfilePage.css */
-
 .container {
   max-width: 600px;
-  margin: 3rem auto;
-  padding: 2rem;
-  background-color: #f8f9fa;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 90%;
+  margin: auto;
+  padding: 40px;
+  background: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  animation: fadeIn 0.5s ease-in;
+  margin-top: 60px;
+  margin-bottom: 60px;
 }
+
 
 .container h2 {
   text-align: center;
-  margin-bottom: 1.5rem;
-  color: #111;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.container ul {
+  list-style: none;
+  padding: 0;
 }
 
 .container li {
-  padding: 0.9rem 0;
-  border-bottom: 1px solid #ccc;
-  font-size: 1.05rem;
-  display: flex;
-  justify-content: space-between;
-  color: #212529;
+  padding: 10px 0;
+  border-bottom: 1px solid #eaeaea;
+  color: #555;
 }
 
-.contaner li strong {
-  color: #000; /* bold and dark */
-  font-weight: 600;
+.container li strong {
+  color: #222;
 }
 
-.container li:last-child {
-  border-bottom: none;
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -21,7 +21,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('https://scholarship-finder-xtg6.onrender.com/api/auth/login', {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -47,7 +47,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2>Login to bhavyadecidenameplease</h2>
+      <h2>Login to ScholarMatch</h2>
       <form onSubmit={handleLogin}>
         <div className="form-group">
           <label>Email</label>

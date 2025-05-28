@@ -55,8 +55,8 @@ async function scrapeScholarshipsCom() {
           const text = document.body.innerText.toLowerCase();
           const desc = document.querySelector('div > div > p').textContent;
           
-          const regexNumBefore = /(\d+(\.\d+)?)(?=.{0,15}?(gpa|least a|minimum|maintain))/gi;
-          const regexKeyBefore = /(gpa|least a|minimum|maintain)(?=.{0,15}?\s*(\d+(\.\d+)?))/gi;
+          const regexNumBefore = /(\d+(\.\d+)?)(?=.{0,15}?(gpa|least a|must have a))/gi;
+          const regexKeyBefore = /(gpa|least a|minimum)(?=.{0,15}?\s*(\d+(\.\d+)?))/gi;
 
           let matches = [];
 

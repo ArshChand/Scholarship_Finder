@@ -36,10 +36,17 @@
   border: 1px solid #007acc;
   border-radius: 5px;
   text-decoration: none;
-  color: #007acc;
+  color: #eceff1;
 }
 
 .navbar__auth .signup {
   background-color: #007acc;
   color: white;
+}
+
+.navbar__welcome {
+  color: #222; /* darker color for better visibility */
+  margin-right: 12px;
+  font-weight: 500;
+  font-size: 16px;
 }

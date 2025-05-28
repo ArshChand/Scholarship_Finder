@@ -10,7 +10,7 @@ const AllScholarships = () => {
 
   // Fetch scholarships on mount
   useEffect(() => {
-    fetch('https://scholarship-finder-xtg6.onrender.com/api/scholarships/all')
+    fetch('http://localhost:5000/api/scholarships/all')
       .then((res) => res.json())
       .then((data) => {
         setScholarships(data);

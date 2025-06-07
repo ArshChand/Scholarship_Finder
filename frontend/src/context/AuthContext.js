@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     // Fetch full user profile from backend
     const fetchProfile = async () => {
       try {
-        const res = await axios.get('https://scholarship-finder-xtg6.onrender.com/api/auth/complete-profile', {
+        const res = await axios.get('http://localhost:5000/api/auth/complete-profile', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUser(res.data); // This replaces partial info with full profile

@@ -11,7 +11,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if (!token) return;
 
-    axios.get('https://scholarship-finder-xtg6.onrender.com/api/auth/complete-profile', {
+    axios.get('http://localhost:5000/api/auth/complete-profile', {
       headers: {
         Authorization: `Bearer ${token}`,
       }

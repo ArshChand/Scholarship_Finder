@@ -17,6 +17,13 @@
 </div>
 
 ---
+## Developer Contacts
+
+**Bhavya Bharti** - [GitHub](https://github.com/bhavyabhart)
+
+**Arsh Chand** - [GitHub](https://github.com/ArshChand)  
+
+---
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -159,11 +166,6 @@ Please follow the existing code style and include meaningful commit messages.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
-
-## Contact
-
-**Arsh Chand** - [GitHub](https://github.com/ArshChand)  
-**Bhavya Bharti** - [GitHub](https://github.com/bhavyabhart)
 
 Project Link: [https://github.com/ArshChand/Scholarship_Finder](https://github.com/ArshChand/Scholarship_Finder)
 
